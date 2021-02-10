@@ -56,9 +56,4 @@ const createObject = () => {
   };
 };
 
-
-//  Создание массива
-
-const similarObject = new Array(10).fill(null).map(() => createObject());
-
-similarObject;
+export {createObject};

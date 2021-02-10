@@ -40,6 +40,7 @@ const getRandomArrayElement = (array) => {
 
 
 // Массив случайной длины из значений, которые не должны повторяться
+
 const getRandomArrayUnique = (array) => {
   // длина нового массива
   const arrayLength = getRandomInteger(0, array.length);
