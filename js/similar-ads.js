@@ -1,10 +1,3 @@
-import {createObject} from './data.js';
-
-const ADS_CONTAINER = document.querySelector('#map-canvas');
-const TEMPLATE_AD = document.querySelector('#card').content.querySelector('.popup');
-
-const similarAd = createObject();
-
 const createFeatures = (features) => {
   const featuresList = document.createDocumentFragment();
   features.forEach((featureName) => {
@@ -34,8 +27,8 @@ const createPhoto = (photos) => {
 const createAd = ({
   author: {avatar},
   offer: {title, address, price, type, rooms, guests, checkin, checkout, features, description, photos},
-}) => {
-  const adElement = TEMPLATE_AD.cloneNode(true);
+}, template) => {
+  const adElement = template.cloneNode(true);
 
   adElement.querySelector('.popup__title').textContent = title;
   adElement.querySelector('.popup__text--address').textContent = address;
@@ -53,6 +46,4 @@ const createAd = ({
   return adElement;
 };
 
-const card = createAd(similarAd);
-
-ADS_CONTAINER.appendChild(card);
+export {createAd};
