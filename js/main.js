@@ -1,14 +1,15 @@
 import {createObject} from './data.js';
 import {createAd} from './similar-ads.js'
+import './form.js'
 
 // Шаблон карточки объявления
-const ADS_CONTAINER = document.querySelector('#map-canvas');
-const TEMPLATE_AD = document.querySelector('#card').content.querySelector('.popup');
+const adsContainer = document.querySelector('#map-canvas');
+const templateAd = document.querySelector('#card').content.querySelector('.popup');
 
 // Создание массива из 10 объектов
 const similarObjects = new Array(10).fill(null).map(() => createObject());
 
 // Создание объявления
-const card = createAd(similarObjects[0], TEMPLATE_AD);
-ADS_CONTAINER.appendChild(card);
+const card = createAd(similarObjects[0], templateAd);
+adsContainer.appendChild(card);
 
