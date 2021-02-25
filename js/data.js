@@ -5,8 +5,8 @@ import {
   getRandomArrayUnique
 } from './utils.js';
 
-const TITLE = ['Заголовок предложения 1', 'Заголовок предложения 2', 'Заголовок предложения 3'];
-const DESCRIPTION = ['Описание помещения 1', 'Описание помещения 2', 'Описание помещения 3'];
+const TITLES = ['Заголовок предложения 1', 'Заголовок предложения 2', 'Заголовок предложения 3'];
+const DESCRIPTIONS = ['Описание помещения 1', 'Описание помещения 2', 'Описание помещения 3'];
 
 const TYPES_OF_HOUSE = ['palace', 'flat', 'bungalow', 'house'];
 
@@ -18,7 +18,7 @@ const TYPES_OF_HOUSE_RU = {
 };
 
 const FEATURES_OF_HOUSE = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
-const TIME_CHECKIN_CHECKOUT = ['12:00', '13:00', '14:00'];
+const TIMES_CHECKIN_CHECKOUT = ['12:00', '13:00', '14:00'];
 const PHOTOS = [
   'http://o0.github.io/assets/images/tokyo/hotel1.jpg',
   'http://o0.github.io/assets/images/tokyo/hotel2.jpg',
@@ -49,16 +49,16 @@ const createObject = () => {
       avatar: AVATAR_IMG.url + '0' + getRandomInteger(1, 8).toString() + AVATAR_IMG.formatImg,
     },
     offer: {
-      title: getRandomArrayElement(TITLE),
+      title: getRandomArrayElement(TITLES),
       address: locationX.toString() + ', ' + locationY.toString(),
       price: getRandomInteger(1, 1e4),
       type: TYPES_OF_HOUSE_RU[getRandomArrayElement(TYPES_OF_HOUSE)],
       rooms: getRandomInteger(1, 5),
       guests: getRandomInteger(1, 5),
-      checkin: getRandomArrayElement(TIME_CHECKIN_CHECKOUT),
-      checkout: getRandomArrayElement(TIME_CHECKIN_CHECKOUT),
+      checkin: getRandomArrayElement(TIMES_CHECKIN_CHECKOUT),
+      checkout: getRandomArrayElement(TIMES_CHECKIN_CHECKOUT),
       features: getRandomArrayUnique(FEATURES_OF_HOUSE),
-      description: getRandomArrayElement(DESCRIPTION),
+      description: getRandomArrayElement(DESCRIPTIONS),
       photos: getRandomArrayUnique(PHOTOS),
     },
     location: {
