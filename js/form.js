@@ -17,10 +17,24 @@ selectType.addEventListener('change', () => {
   inputPrice.min = MINIMUM_PRICE[selectType.value];
 });
 
-checkingTime.addEventListener('change', () => {
-  checkoutTime.value = checkingTime.value;
-});
+// Время заезда и время выезда
 
-checkoutTime.addEventListener('change', () => {
-  checkingTime.value = checkoutTime.value;
-});
+// checkingTime.addEventListener('change', () => {
+//   checkoutTime.value = checkingTime.value;
+// });
+//
+// checkoutTime.addEventListener('change', () => {
+//   checkingTime.value = checkoutTime.value;
+// });
+
+// Добавила делегирование (хотелось бы узнать, есть ли смысл тут сделать так?)
+const formTimeOfStay = document.querySelector('.ad-form__element--time');
+
+const timeChangeHandler = function (evt) {
+  if (evt.target.matches('select')) {
+    checkoutTime.value = evt.target.value;
+    checkingTime.value = evt.target.value;
+  }
+}
+
+formTimeOfStay.addEventListener('change', timeChangeHandler);
