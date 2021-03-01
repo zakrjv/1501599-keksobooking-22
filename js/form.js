@@ -27,7 +27,6 @@ selectType.addEventListener('change', () => {
 //   checkingTime.value = checkoutTime.value;
 // });
 
-// Добавила делегирование (хотелось бы узнать, есть ли смысл тут сделать так?)
 const formTimeOfStay = document.querySelector('.ad-form__element--time');
 
 const timeChangeHandler = function (evt) {
