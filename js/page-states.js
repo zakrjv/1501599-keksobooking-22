@@ -23,8 +23,6 @@ const disablePage = () => {
   disableElements(mapFiltersBlocks);
 };
 
-disablePage();
-
 const enablePage = () => {
   formAd.classList.remove('ad-form--disabled');
   mapFilters.classList.remove('map__filters--disabled')
@@ -33,4 +31,7 @@ const enablePage = () => {
 };
 
 
-export {enablePage};
+export {
+  enablePage,
+  disablePage
+};
