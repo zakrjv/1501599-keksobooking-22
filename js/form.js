@@ -4,11 +4,23 @@ const MINIMUM_PRICE = {
   bungalow: '0',
   house: '5000',
 };
+const AVAILABLE_GUEST_QUANTITY = {
+  1: ['1'],
+  2: ['1', '2'],
+  3: ['1', '2', '3'],
+  100: ['0'],
+};
 
 const selectType = document.querySelector('#type')
 const inputPrice = document.querySelector('#price')
+
 const checkingTime = document.querySelector('#timein');
 const checkoutTime = document.querySelector('#timeout');
+
+const guestNumberOptions = document.querySelector('#capacity').children;
+
+
+// Цена
 
 inputPrice.placeholder = MINIMUM_PRICE[selectType.value];
 
@@ -17,23 +29,38 @@ selectType.addEventListener('change', () => {
   inputPrice.min = MINIMUM_PRICE[selectType.value];
 });
 
+
 // Время заезда и время выезда
 
-// checkingTime.addEventListener('change', () => {
-//   checkoutTime.value = checkingTime.value;
-// });
-//
-// checkoutTime.addEventListener('change', () => {
-//   checkingTime.value = checkoutTime.value;
-// });
-
-const formTimeOfStay = document.querySelector('.ad-form__element--time');
-
-const timeChangeHandler = function (evt) {
+const timeChangeHandler = (evt) => {
   if (evt.target.matches('select')) {
     checkoutTime.value = evt.target.value;
     checkingTime.value = evt.target.value;
   }
 }
 
-formTimeOfStay.addEventListener('change', timeChangeHandler);
+
+// Количество комнат и количество мест
+
+const disableUnavailableGuestQuantity = (roomQuantity) => {
+  const availableGuestQuantity = AVAILABLE_GUEST_QUANTITY[roomQuantity];
+  for (let i = 0; i < guestNumberOptions.length; i++) {
+    guestNumberOptions[i].disabled = !availableGuestQuantity.includes(guestNumberOptions[i].value);
+  }
+}
+
+const showRoomQuantityError = (roomQuantity, guestSelect) => {
+  const availableGuestQuantity = AVAILABLE_GUEST_QUANTITY[roomQuantity];
+
+  if (!availableGuestQuantity.includes(guestSelect.value)) {
+    guestSelect.setCustomValidity('Количество гостей не соответствует количеству комнат.');
+    guestSelect.reportValidity();
+  }
+};
+
+
+export {
+  timeChangeHandler,
+  disableUnavailableGuestQuantity,
+  showRoomQuantityError
+}
