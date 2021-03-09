@@ -10,12 +10,17 @@ const COORDINATES_INITIAL = {
 
 const addressInput = document.querySelector('#address');
 
+// Начальное заполнение поля с координатами
+const addInitialCoordinates = () => {
+  addressInput.value = `${COORDINATES_INITIAL.lat.toFixed(5)}, ${COORDINATES_INITIAL.lng.toFixed(5)}`;
+}
+
 // Создание карты
 const createMap = () => {
   return L.map('map-canvas')
     .on('load', () => {
       enablePage();
-      addressInput.value = `${COORDINATES_INITIAL.lat.toFixed(5)}, ${COORDINATES_INITIAL.lng.toFixed(5)}`;
+      addInitialCoordinates();
     })
     .setView({
       lat: COORDINATES_INITIAL.lat,
@@ -67,7 +72,7 @@ const createMainPinMarker = (map) => {
 // Сброс позиции маркера
 const resetMarkerPosition = (marker) => {
   marker.setLatLng(COORDINATES_INITIAL);
-  addressInput.value = `${COORDINATES_INITIAL.lat.toFixed(5)}, ${COORDINATES_INITIAL.lng.toFixed(5)}`;
+  addInitialCoordinates();
 }
 
 // Обычные метки

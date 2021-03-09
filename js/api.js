@@ -8,7 +8,6 @@ const sendData = (onSuccess, onFail, body) => {
     'https://22.javascript.pages.academy/keksobooking',
     {
       method: 'POST',
-      contentType: 'multipart/form-data',
       body,
     },
   )
