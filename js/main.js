@@ -1,34 +1,44 @@
-import {createObject} from './data.js';
 import {
   createMap,
   createPinMarkers,
   createMainPinMarker,
-  loadMapImage
+  loadMapImage,
+  resetMarkerPosition
 } from './map.js';
 import {
   disableUnavailableGuestQuantity,
   showRoomQuantityError,
-  timeChangeHandler
+  timeChangeHandler,
+  submitHandler,
+  resetForm
 } from './form.js';
 import {disablePage} from './page-states.js';
+import {getData} from './api.js';
+import {
+  showAlert,
+  showSuccessMessage
+} from './messages.js';
 
 const templateAd = document.querySelector('#card').content.querySelector('.popup');
 const formTimeOfStay = document.querySelector('.ad-form__element--time');
 const roomNumber = document.querySelector('#room_number');
 const guestNumberCurrent = document.querySelector('#capacity');
-
-
-// Создание массива из 10 объектов
-const similarObjects = new Array(10).fill(null).map(() => createObject());
+const cleaningFormButton = document.querySelector('.ad-form__reset')
 
 
 // Открытие страницы
 disablePage();
-
 const map = createMap();
 loadMapImage().addTo(map);
-createMainPinMarker(map);
-createPinMarkers(similarObjects, templateAd, map);
+const mainMarker = createMainPinMarker(map);
+
+
+// Создание маркеров с данными от сервера
+getData().then((arrayAds) => {
+  createPinMarkers(arrayAds, templateAd, map);
+}).catch(() => {
+  showAlert('При загрузке данных с сервера произошла ошибка, перезагрузите страницу')
+});
 
 
 // Синхронизация времени заезда и времени выезда
@@ -45,3 +55,20 @@ roomNumber.addEventListener('change', (evt) => {
 guestNumberCurrent.addEventListener('change', () => {
   guestNumberCurrent.setCustomValidity('');
 });
+
+
+// Отправка данных
+submitHandler(() => {
+  resetForm();
+  resetMarkerPosition(mainMarker);
+  showSuccessMessage();
+});
+
+
+// Очистка формы
+cleaningFormButton.addEventListener('click', (evt) => {
+  evt.preventDefault();
+  resetForm();
+  resetMarkerPosition(mainMarker);
+})
+

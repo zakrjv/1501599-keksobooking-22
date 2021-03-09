@@ -1,3 +1,6 @@
+import {showFailedDispatch} from './messages.js'
+import {sendData} from './api.js'
+
 const MINIMUM_PRICE = {
   palace: '10000',
   flat: '1000',
@@ -11,6 +14,9 @@ const AVAILABLE_GUEST_QUANTITY = {
   100: ['0'],
 };
 
+const formAd = document.querySelector('.ad-form');
+const filtresMap = document.querySelector('.map__filters');
+
 const selectType = document.querySelector('#type')
 const inputPrice = document.querySelector('#price')
 
@@ -21,7 +27,6 @@ const guestNumberOptions = document.querySelector('#capacity').children;
 
 
 // Цена
-
 inputPrice.placeholder = MINIMUM_PRICE[selectType.value];
 
 selectType.addEventListener('change', () => {
@@ -31,7 +36,6 @@ selectType.addEventListener('change', () => {
 
 
 // Время заезда и время выезда
-
 const timeChangeHandler = (evt) => {
   if (evt.target.matches('select')) {
     checkoutTime.value = evt.target.value;
@@ -41,7 +45,6 @@ const timeChangeHandler = (evt) => {
 
 
 // Количество комнат и количество мест
-
 const disableUnavailableGuestQuantity = (roomQuantity) => {
   const availableGuestQuantity = AVAILABLE_GUEST_QUANTITY[roomQuantity];
   for (let i = 0; i < guestNumberOptions.length; i++) {
@@ -59,8 +62,31 @@ const showRoomQuantityError = (roomQuantity, guestSelect) => {
 };
 
 
+// Сброс форм
+const resetForm = () => {
+  formAd.reset();
+  filtresMap.reset();
+}
+
+
+// Отправка данных
+const submitHandler = (onSuccess) => {
+  formAd.addEventListener('submit', (evt) => {
+    evt.preventDefault();
+
+    sendData(
+      () => onSuccess(),
+      () => showFailedDispatch(),
+      new FormData(evt.target),
+    );
+  });
+};
+
+
 export {
   timeChangeHandler,
   disableUnavailableGuestQuantity,
-  showRoomQuantityError
+  showRoomQuantityError,
+  submitHandler,
+  resetForm
 }
