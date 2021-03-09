@@ -8,11 +8,14 @@ const COORDINATES_INITIAL = {
   lng: 139.753637,
 }
 
+const addressInput = document.querySelector('#address');
+
 // Создание карты
 const createMap = () => {
   return L.map('map-canvas')
     .on('load', () => {
       enablePage();
+      addressInput.value = `${COORDINATES_INITIAL.lat.toFixed(5)}, ${COORDINATES_INITIAL.lng.toFixed(5)}`;
     })
     .setView({
       lat: COORDINATES_INITIAL.lat,
@@ -32,15 +35,11 @@ const loadMapImage= () => {
 
 // Функция добавления главной метки
 const createMainPinMarker = (map) => {
-  // Поле вывода координат
-  const addressInput = document.querySelector('#address');
-  addressInput.value = `${COORDINATES_INITIAL.lat.toFixed(5)}, ${COORDINATES_INITIAL.lng.toFixed(5)}`;
 
-  // Главная метка
   const mainPinIcon = L.icon({
     iconUrl: './img/main-pin.svg',
-    iconSize: [52, 52],
-    iconAnchor: [26, 52],
+    iconSize: [60, 60],
+    iconAnchor: [30, 60],
   });
 
   const mainPinMarker = L.marker(
@@ -62,7 +61,14 @@ const createMainPinMarker = (map) => {
     addressInput.value = `${coordinatesMarker.lat.toFixed(5)}, ${coordinatesMarker.lng.toFixed(5)}`;
   });
 
+  return mainPinMarker;
 };
+
+// Сброс позиции маркера
+const resetMarkerPosition = (marker) => {
+  marker.setLatLng(COORDINATES_INITIAL);
+  addressInput.value = `${COORDINATES_INITIAL.lat.toFixed(5)}, ${COORDINATES_INITIAL.lng.toFixed(5)}`;
+}
 
 // Обычные метки
 const createPinMarkers = (array, template, map) => {
@@ -75,8 +81,8 @@ const createPinMarkers = (array, template, map) => {
 
     const ordinaryPinMarker = L.marker(
       {
-        lat: ad.location.x,
-        lng: ad.location.y,
+        lat: ad.location.x || ad.location.lat,
+        lng: ad.location.y || ad.location.lng,
       },
       {
         icon: ordinaryPinIcon,
@@ -94,11 +100,13 @@ const createPinMarkers = (array, template, map) => {
   });
 };
 
+
 export {
   createMap,
   createMainPinMarker,
   createPinMarkers,
-  loadMapImage
+  loadMapImage,
+  resetMarkerPosition
 };
 
 
