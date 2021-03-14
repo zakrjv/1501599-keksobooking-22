@@ -1,8 +1,6 @@
 import {
-  createMap,
-  createPinMarkers,
+  renderPinMarkers,
   createMainPinMarker,
-  loadMapImage,
   resetMarkerPosition
 } from './map.js';
 import {
@@ -12,33 +10,42 @@ import {
   submitHandler,
   resetForm
 } from './form.js';
-import {disablePage} from './page-states.js';
+import {disablePage, enablePage} from './page-states.js';
 import {getData} from './api.js';
 import {
   showAlert,
   showSuccessMessage
 } from './messages.js';
+import './filtration.js'
 
 const templateAd = document.querySelector('#card').content.querySelector('.popup');
 const formTimeOfStay = document.querySelector('.ad-form__element--time');
 const roomNumber = document.querySelector('#room_number');
 const guestNumberCurrent = document.querySelector('#capacity');
 const cleaningFormButton = document.querySelector('.ad-form__reset')
+const formMap = document.querySelector('.map__filters');
 
 
 // Открытие страницы
 disablePage();
-const map = createMap();
-loadMapImage().addTo(map);
-const mainMarker = createMainPinMarker(map);
+const mainMarker = createMainPinMarker();
 
 
 // Создание маркеров с данными от сервера
 getData().then((arrayAds) => {
-  createPinMarkers(arrayAds, templateAd, map);
+  renderPinMarkers(arrayAds, templateAd);
+  enablePage();
+  setEyesClick(() => renderPinMarkers(arrayAds, templateAd));
 }).catch(() => {
   showAlert('При загрузке данных с сервера произошла ошибка, перезагрузите страницу')
 });
+
+// Фильтрация карты
+const setEyesClick = (cb) => {
+  formMap.addEventListener('change', () => {
+    cb();
+  });
+}
 
 
 // Синхронизация времени заезда и времени выезда
