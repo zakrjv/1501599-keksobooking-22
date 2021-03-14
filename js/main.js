@@ -35,13 +35,13 @@ const mainMarker = createMainPinMarker();
 getData().then((arrayAds) => {
   renderPinMarkers(arrayAds, templateAd);
   enablePage();
-  setEyesClick(() => renderPinMarkers(arrayAds, templateAd));
+  setTypeClick(() => renderPinMarkers(arrayAds, templateAd));
 }).catch(() => {
   showAlert('При загрузке данных с сервера произошла ошибка, перезагрузите страницу')
 });
 
 // Фильтрация карты
-const setEyesClick = (cb) => {
+const setTypeClick = (cb) => {
   formMap.addEventListener('change', () => {
     cb();
   });
