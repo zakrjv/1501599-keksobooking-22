@@ -1,5 +1,5 @@
 import {createAd} from './similar-ads.js'
-import {enablePage} from './page-states.js'
+import {sortAds} from './filtration.js'
 
 /* global L:readonly */
 
@@ -7,6 +7,7 @@ const COORDINATES_INITIAL = {
   lat: 35.683613,
   lng: 139.753637,
 }
+const SIMILAR_ADS_COUNT = 10;
 
 const addressInput = document.querySelector('#address');
 
@@ -16,30 +17,24 @@ const addInitialCoordinates = () => {
 }
 
 // Создание карты
-const createMap = () => {
-  return L.map('map-canvas')
-    .on('load', () => {
-      enablePage();
-      addInitialCoordinates();
-    })
-    .setView({
-      lat: COORDINATES_INITIAL.lat,
-      lng: COORDINATES_INITIAL.lng,
-    }, 10);
-};
+const map = L.map('map-canvas')
+  .on('load', () => {
+    addInitialCoordinates();
+  })
+  .setView({
+    lat: COORDINATES_INITIAL.lat,
+    lng: COORDINATES_INITIAL.lng,
+  }, 10);
 
-// Добавляет изображение карты
-const loadMapImage= () => {
-  return L.tileLayer(
-    'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-    {
-      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-    },
-  );
-}
+L.tileLayer(
+  'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+  {
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+  },
+).addTo(map);
 
 // Функция добавления главной метки
-const createMainPinMarker = (map) => {
+const createMainPinMarker = () => {
 
   const mainPinIcon = L.icon({
     iconUrl: './img/main-pin.svg',
@@ -76,41 +71,48 @@ const resetMarkerPosition = (marker) => {
 }
 
 // Обычные метки
-const createPinMarkers = (array, template, map) => {
-  array.forEach((ad) => {
-    const ordinaryPinIcon = L.icon({
-      iconUrl: './img/pin.svg',
-      iconSize: [48, 48],
-      iconAnchor: [24, 48],
-    });
+const markersLayer = new L.LayerGroup();
 
-    const ordinaryPinMarker = L.marker(
-      {
-        lat: ad.location.x || ad.location.lat,
-        lng: ad.location.y || ad.location.lng,
-      },
-      {
-        icon: ordinaryPinIcon,
-      },
-    );
+const renderPinMarkers = (array, template) => {
+  markersLayer.clearLayers();
+  array
+    .slice()
+    .sort(sortAds)
+    .slice(0, SIMILAR_ADS_COUNT)
+    .forEach((ad) => {
+      const ordinaryPinIcon = L.icon({
+        iconUrl: './img/pin.svg',
+        iconSize: [48, 48],
+        iconAnchor: [24, 48],
+      });
 
-    ordinaryPinMarker
-      .addTo(map)
-      .bindPopup(
-        createAd(ad, template),
+      const ordinaryPinMarker = L.marker(
         {
-          keepInView: true,
+          lat: ad.location.x || ad.location.lat,
+          lng: ad.location.y || ad.location.lng,
+        },
+        {
+          icon: ordinaryPinIcon,
         },
       );
-  });
+
+      ordinaryPinMarker
+        .addTo(map)
+        .bindPopup(
+          createAd(ad, template),
+          {
+            keepInView: true,
+          },
+        );
+      markersLayer.addLayer(ordinaryPinMarker);
+    });
+  markersLayer.addTo(map);
 };
 
 
 export {
-  createMap,
   createMainPinMarker,
-  createPinMarkers,
-  loadMapImage,
+  renderPinMarkers,
   resetMarkerPosition
 };
 
