@@ -1,4 +1,3 @@
-/* global _:readonly */
 import {
   renderPinMarkers,
   createMainPinMarker,
@@ -17,7 +16,7 @@ import {
   showAlert,
   showSuccessMessage
 } from './messages.js';
-import './filtration.js'
+import {debounce} from './debounce.js';
 
 const RERENDER_DELAY = 500;
 
@@ -38,7 +37,7 @@ const mainMarker = createMainPinMarker();
 getData().then((arrayAds) => {
   renderPinMarkers(arrayAds, templateAd);
   enablePage();
-  setFilterClick(_.debounce(
+  setFilterClick(debounce(
     () => renderPinMarkers(arrayAds, templateAd),
     RERENDER_DELAY,
   ));
