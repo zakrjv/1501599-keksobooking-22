@@ -1,3 +1,4 @@
+/* global _:readonly */
 import {
   renderPinMarkers,
   createMainPinMarker,
@@ -18,6 +19,8 @@ import {
 } from './messages.js';
 import './filtration.js'
 
+const RERENDER_DELAY = 500;
+
 const templateAd = document.querySelector('#card').content.querySelector('.popup');
 const formTimeOfStay = document.querySelector('.ad-form__element--time');
 const roomNumber = document.querySelector('#room_number');
@@ -35,13 +38,16 @@ const mainMarker = createMainPinMarker();
 getData().then((arrayAds) => {
   renderPinMarkers(arrayAds, templateAd);
   enablePage();
-  setTypeClick(() => renderPinMarkers(arrayAds, templateAd));
+  setFilterClick(_.debounce(
+    () => renderPinMarkers(arrayAds, templateAd),
+    RERENDER_DELAY,
+  ));
 }).catch(() => {
   showAlert('При загрузке данных с сервера произошла ошибка, перезагрузите страницу')
 });
 
 // Фильтрация карты
-const setTypeClick = (cb) => {
+const setFilterClick = (cb) => {
   formMap.addEventListener('change', () => {
     cb();
   });
