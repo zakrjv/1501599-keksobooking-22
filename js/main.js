@@ -16,7 +16,7 @@ import {
   showAlert,
   showSuccessMessage
 } from './messages.js';
-import {debounce} from './debounce.js';
+import {debounce} from './utils.js';
 
 const RERENDER_DELAY = 500;
 
