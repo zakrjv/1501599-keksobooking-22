@@ -1,5 +1,5 @@
 import {createAd} from './similar-ads.js'
-import {sortAds} from './filtration.js'
+import {filtrationAds} from './filtration.js'
 
 /* global L:readonly */
 
@@ -76,8 +76,7 @@ const markersLayer = new L.LayerGroup();
 const renderPinMarkers = (array, template) => {
   markersLayer.clearLayers();
   array
-    .slice()
-    .sort(sortAds)
+    .filter(filtrationAds)
     .slice(0, SIMILAR_ADS_COUNT)
     .forEach((ad) => {
       const ordinaryPinIcon = L.icon({
