@@ -17,7 +17,6 @@ import {
   showSuccessMessage
 } from './messages.js';
 import {debounce} from './utils.js';
-import './showing-pictures.js';
 import {
   uploadPhoto,
   resetPhoto,
