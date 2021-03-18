@@ -8,7 +8,7 @@ import {
   showRoomQuantityError,
   timeChangeHandler,
   submitHandler,
-  resetForm
+  resetForm, checkPrice
 } from './form.js';
 import {disablePage, enablePage} from './page-states.js';
 import {getData} from './api.js';
@@ -36,6 +36,9 @@ const avatarChooser = document.querySelector('.ad-form__field input[type=file]')
 const previewAvatar = document.querySelector('.ad-form-header__preview img')
 const housingPhotoChooser = document.querySelector('.ad-form__upload input[type=file]');
 const previewHousingPhoto = document.querySelector('.ad-form__photo')
+
+const selectType = document.querySelector('#type')
+const inputPrice = document.querySelector('#price')
 
 
 // Открытие страницы
@@ -76,6 +79,16 @@ housingPhotoChooser.addEventListener('change', () => {
 
 // Синхронизация времени заезда и времени выезда
 formTimeOfStay.addEventListener('change', timeChangeHandler);
+
+
+// Цена и тип жилья
+selectType.addEventListener('change', () => {
+  checkPrice(inputPrice, selectType);
+});
+
+inputPrice.addEventListener('blur', () => {
+  checkPrice(inputPrice, selectType);
+})
 
 
 // Синхронизация количество комнат и количество мест
