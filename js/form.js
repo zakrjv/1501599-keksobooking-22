@@ -17,9 +17,6 @@ const AVAILABLE_GUEST_QUANTITY = {
 const formAd = document.querySelector('.ad-form');
 const filtresMap = document.querySelector('.map__filters');
 
-const selectType = document.querySelector('#type')
-const inputPrice = document.querySelector('#price')
-
 const checkingTime = document.querySelector('#timein');
 const checkoutTime = document.querySelector('#timeout');
 
@@ -27,12 +24,17 @@ const guestNumberOptions = document.querySelector('#capacity').children;
 
 
 // Цена
-inputPrice.placeholder = MINIMUM_PRICE[selectType.value];
+const checkPrice = (price, housingType) => {
+  price.placeholder = MINIMUM_PRICE[housingType.value];
 
-selectType.addEventListener('change', () => {
-  inputPrice.value = MINIMUM_PRICE[selectType.value];
-  inputPrice.min = MINIMUM_PRICE[selectType.value];
-});
+  if (+price.value < +MINIMUM_PRICE[housingType.value]) {
+    price.setCustomValidity(`Цена от ${MINIMUM_PRICE[housingType.value]}`);
+  } else {
+    price.setCustomValidity('');
+  }
+  
+  price.reportValidity();
+}
 
 
 // Время заезда и время выезда
@@ -88,5 +90,6 @@ export {
   disableUnavailableGuestQuantity,
   showRoomQuantityError,
   submitHandler,
-  resetForm
+  resetForm,
+  checkPrice
 }

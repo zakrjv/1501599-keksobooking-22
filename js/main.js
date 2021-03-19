@@ -8,7 +8,7 @@ import {
   showRoomQuantityError,
   timeChangeHandler,
   submitHandler,
-  resetForm
+  resetForm, checkPrice
 } from './form.js';
 import {disablePage, enablePage} from './page-states.js';
 import {getData} from './api.js';
@@ -16,7 +16,12 @@ import {
   showAlert,
   showSuccessMessage
 } from './messages.js';
-import {debounce} from './debounce.js';
+import {debounce} from './utils.js';
+import {
+  uploadPhoto,
+  resetPhoto,
+  createPhoto
+} from './showing-pictures.js';
 
 const RERENDER_DELAY = 500;
 
@@ -26,6 +31,14 @@ const roomNumber = document.querySelector('#room_number');
 const guestNumberCurrent = document.querySelector('#capacity');
 const cleaningFormButton = document.querySelector('.ad-form__reset')
 const formMap = document.querySelector('.map__filters');
+
+const avatarChooser = document.querySelector('.ad-form__field input[type=file]');
+const previewAvatar = document.querySelector('.ad-form-header__preview img')
+const housingPhotoChooser = document.querySelector('.ad-form__upload input[type=file]');
+const previewHousingPhoto = document.querySelector('.ad-form__photo')
+
+const selectType = document.querySelector('#type')
+const inputPrice = document.querySelector('#price')
 
 
 // Открытие страницы
@@ -45,6 +58,7 @@ getData().then((arrayAds) => {
   showAlert('При загрузке данных с сервера произошла ошибка, перезагрузите страницу')
 });
 
+
 // Фильтрация карты
 const setFilterClick = (cb) => {
   formMap.addEventListener('change', () => {
@@ -53,8 +67,28 @@ const setFilterClick = (cb) => {
 }
 
 
+// Предпросмотр выбранных фотографий
+avatarChooser.addEventListener('change', () => {
+  uploadPhoto(avatarChooser, previewAvatar);
+})
+housingPhotoChooser.addEventListener('change', () => {
+  const newHousingPhoto = createPhoto(previewHousingPhoto);
+  uploadPhoto(housingPhotoChooser, newHousingPhoto);
+})
+
+
 // Синхронизация времени заезда и времени выезда
 formTimeOfStay.addEventListener('change', timeChangeHandler);
+
+
+// Цена и тип жилья
+selectType.addEventListener('change', () => {
+  checkPrice(inputPrice, selectType);
+});
+
+inputPrice.addEventListener('blur', () => {
+  checkPrice(inputPrice, selectType);
+})
 
 
 // Синхронизация количество комнат и количество мест
@@ -72,6 +106,8 @@ guestNumberCurrent.addEventListener('change', () => {
 // Отправка данных
 submitHandler(() => {
   resetForm();
+  resetPhoto(previewAvatar);
+  resetPhoto(previewHousingPhoto);
   resetMarkerPosition(mainMarker);
   showSuccessMessage();
 });
@@ -81,6 +117,8 @@ submitHandler(() => {
 cleaningFormButton.addEventListener('click', (evt) => {
   evt.preventDefault();
   resetForm();
+  resetPhoto(previewAvatar);
+  resetPhoto(previewHousingPhoto);
   resetMarkerPosition(mainMarker);
 })
 
