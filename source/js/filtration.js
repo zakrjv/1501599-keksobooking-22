@@ -1,9 +1,10 @@
 const Default = {
   DEFAULT_VALUE: 'any',
-  LOW: 10000,
-  HIGH: 50000,
+  PRICE_LOW: 10000,
+  PRICE_HIGH: 50000,
 };
 
+const filtresMap = document.querySelector('.map__filters');
 const housingTypeInput = document.querySelector('[name="housing-type"]');
 const priceInput = document.querySelector('[name="housing-price"]');
 const roomsInput = document.querySelector('[name="housing-rooms"]');
@@ -27,11 +28,11 @@ const filtrationAds = (ad) => {
 const filtrationPrice = (element) => {
   switch (priceInput.value) {
     case 'low':
-      return element.offer.price < Default.LOW;
+      return element.offer.price < Default.PRICE_LOW;
     case 'middle':
-      return element.offer.price <= Default.HIGH && element.offer.price >= Default.LOW;
+      return element.offer.price <= Default.PRICE_HIGH && element.offer.price >= Default.PRICE_LOW;
     case 'high':
-      return element.offer.price > Default.HIGH;
+      return element.offer.price > Default.PRICE_HIGH;
   }
 
   // low -- ad.offer.price < Default.LOW
@@ -46,4 +47,8 @@ const filtrationFeatures = (element) => {
   return arrayFeaturesList.every((item) => element.offer.features.includes(item));
 }
 
-export {filtrationAds}
+const resetFilter = () => {
+  filtresMap.reset();
+}
+
+export {filtrationAds, resetFilter}

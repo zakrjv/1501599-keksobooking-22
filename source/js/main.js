@@ -22,6 +22,7 @@ import {
   resetPhoto,
   createPhoto
 } from './showing-pictures.js';
+import {resetFilter} from './filtration.js'
 
 const RERENDER_DELAY = 500;
 
@@ -40,10 +41,11 @@ const previewHousingPhoto = document.querySelector('.ad-form__photo')
 const selectType = document.querySelector('#type')
 const inputPrice = document.querySelector('#price')
 
+const mainMarker = createMainPinMarker();
+
 
 // Открытие страницы
 disablePage();
-const mainMarker = createMainPinMarker();
 
 
 // Создание маркеров с данными от сервера
@@ -106,6 +108,7 @@ guestNumberCurrent.addEventListener('change', () => {
 // Отправка данных
 submitHandler(() => {
   resetForm();
+  resetFilter();
   resetPhoto(previewAvatar);
   resetPhoto(previewHousingPhoto);
   resetMarkerPosition(mainMarker);
@@ -117,6 +120,7 @@ submitHandler(() => {
 cleaningFormButton.addEventListener('click', (evt) => {
   evt.preventDefault();
   resetForm();
+  resetFilter();
   resetPhoto(previewAvatar);
   resetPhoto(previewHousingPhoto);
   resetMarkerPosition(mainMarker);

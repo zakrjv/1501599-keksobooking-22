@@ -38,8 +38,8 @@ const createMainPinMarker = () => {
 
   const mainPinIcon = L.icon({
     iconUrl: './img/main-pin.svg',
-    iconSize: [60, 60],
-    iconAnchor: [30, 60],
+    iconSize: [54, 54],
+    iconAnchor: [27, 54],
   });
 
   const mainPinMarker = L.marker(
@@ -53,7 +53,7 @@ const createMainPinMarker = () => {
     },
   );
 
-  mainPinMarker.addTo(map);
+  mainPinMarker.addTo(map).setZIndexOffset(100);
 
   // Перемещение главной метки
   mainPinMarker.on('moveend', (evt) => {

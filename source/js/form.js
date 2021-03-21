@@ -15,7 +15,6 @@ const AVAILABLE_GUEST_QUANTITY = {
 };
 
 const formAd = document.querySelector('.ad-form');
-const filtresMap = document.querySelector('.map__filters');
 
 const checkingTime = document.querySelector('#timein');
 const checkoutTime = document.querySelector('#timeout');
@@ -32,7 +31,7 @@ const checkPrice = (price, housingType) => {
   } else {
     price.setCustomValidity('');
   }
-  
+
   price.reportValidity();
 }
 
@@ -67,7 +66,6 @@ const showRoomQuantityError = (roomQuantity, guestSelect) => {
 // Сброс форм
 const resetForm = () => {
   formAd.reset();
-  filtresMap.reset();
 }
 
 
