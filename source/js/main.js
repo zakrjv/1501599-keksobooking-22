@@ -30,7 +30,7 @@ const templateAd = document.querySelector('#card').content.querySelector('.popup
 const formTimeOfStay = document.querySelector('.ad-form__element--time');
 const roomNumber = document.querySelector('#room_number');
 const guestNumberCurrent = document.querySelector('#capacity');
-const cleaningFormButton = document.querySelector('.ad-form__reset')
+const cleaningFormButton = document.querySelector('.ad-form__reset');
 const formMap = document.querySelector('.map__filters');
 
 const avatarChooser = document.querySelector('.ad-form__field input[type=file]');
@@ -50,10 +50,10 @@ disablePage();
 
 // Создание маркеров с данными от сервера
 getData().then((arrayAds) => {
-  renderPinMarkers(arrayAds, templateAd);
+  renderPinMarkers(arrayAds, templateAd, cleaningFormButton);
   enablePage();
   setFilterClick(debounce(
-    () => renderPinMarkers(arrayAds, templateAd),
+    () => renderPinMarkers(arrayAds, templateAd, cleaningFormButton),
     RERENDER_DELAY,
   ));
 }).catch(() => {

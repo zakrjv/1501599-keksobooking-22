@@ -1,5 +1,6 @@
 import {createAd} from './similar-ads.js'
 import {filtrationAds} from './filtration.js'
+import {submitHandler} from './form.js';
 
 /* global L:readonly */
 
@@ -73,8 +74,7 @@ const resetMarkerPosition = (marker) => {
 // Обычные метки
 const markersLayer = new L.LayerGroup();
 
-const renderPinMarkers = (array, template) => {
-  markersLayer.clearLayers();
+const createPinMarkers = (array, template) => {
   array
     .filter(filtrationAds)
     .slice(0, SIMILAR_ADS_COUNT)
@@ -105,7 +105,20 @@ const renderPinMarkers = (array, template) => {
         );
       markersLayer.addLayer(ordinaryPinMarker);
     });
+}
+
+const renderPinMarkers = (array, template, buttonClean) => {
+  markersLayer.clearLayers();
+  createPinMarkers(array, template);
   markersLayer.addTo(map);
+
+  buttonClean.addEventListener('click', () => {
+    createPinMarkers(array, template);
+  });
+
+  submitHandler(() => {
+    createPinMarkers(array, template);
+  });
 };
 
 
